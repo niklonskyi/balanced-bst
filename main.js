@@ -17,6 +17,8 @@ function Tree(array) {
         postorder,
         inorder,
         preorder,
+        height,
+        depth,
     }
 
     function deleteNode(value, root = this.root) {
@@ -78,17 +80,17 @@ function Tree(array) {
 
     function findNode(value, root = this.root) {
         if (root == null) {
-            return root;
+            return null;
         }
 
         if (value < root.data) {
-            findNode(value, root.left);
+            return findNode(value, root.left);
         }
         else if (value > root.data) {
-            findNode(value, root.right);
+            return findNode(value, root.right);
         }
         else {
-            console.log(root);
+            return root;
         }
     }
 
@@ -155,6 +157,40 @@ function Tree(array) {
         return preOrderList;
     }
 
+    function height(node) {
+        if (!(typeof node === 'object')){
+            node = findNode(node, tree.root);
+            if (!node) {
+                return null;
+            }
+        }
+
+        if (node === null) return 0;
+
+        const leftHeight = height(node.left);
+        const rightHeight = height(node.right);
+
+        return Math.max(leftHeight, rightHeight) + 1;
+    }
+
+    function depth(value, root = this.root, depth = 0) {
+        if (root == null) {
+            return null;
+        }
+
+        if (value < root.data) {
+            depth += 1;
+            return this.depth(value, root.left, depth);
+        }
+        else if (value > root.data) {
+            depth += 1;
+            return this.depth(value, root.right, depth);
+        }
+        else {
+            return depth;
+        }
+    }
+
 }
 
 function buildTree(array) {
@@ -190,6 +226,9 @@ console.log(tree.levelOrder());
 console.log(tree.postorder())
 console.log(tree.inorder())
 console.log(tree.preorder())
+console.log(tree.findNode(32));
+console.log(tree.height(36))
+console.log(tree.depth(36))
 
 
 // let array = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324];
