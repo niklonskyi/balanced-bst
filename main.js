@@ -19,6 +19,8 @@ function Tree(array) {
         preorder,
         height,
         depth,
+        isBalancedView,
+        rebalance,
     }
 
     function deleteNode(value, root = this.root) {
@@ -191,6 +193,37 @@ function Tree(array) {
         }
     }
 
+    function isBalancedView() {
+        if(isBalanced(this.root) > 0)
+            return 'Balanced';
+        else
+            return 'Not balanced';
+    }
+
+    function isBalanced(root = this.root) {
+        if (root == null) {
+            return 0;
+        }
+        let lh = isBalanced(root.left);
+        if (lh === -1) {
+            return -1;
+        }
+        let rh = isBalanced(root.right);
+        if (rh === -1) {
+            return -1;
+        }
+        if (Math.abs(lh - rh) > 1) {
+            return -1;
+        }
+        else return Math.max(lh, rh) + 1;
+    }
+
+    function rebalance() {
+        const inorderList = this.inorder();
+        this.root = buildTree(inorderList);
+    }
+
+
 }
 
 function buildTree(array) {
@@ -221,16 +254,3 @@ const prettyPrint = (node, prefix = '', isLeft = true) => {
 
 const array = [10, 11, 17, 19, 30, 31, 37, 38, 101, 103];
 const tree = Tree(array);
-prettyPrint(tree.root)
-console.log(tree.levelOrder());
-console.log(tree.postorder())
-console.log(tree.inorder())
-console.log(tree.preorder())
-console.log(tree.findNode(32));
-console.log(tree.height(36))
-console.log(tree.depth(36))
-
-
-// let array = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324];
-// array.sort();
-// let uniq = [...new Set(array)];
